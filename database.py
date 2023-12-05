@@ -8,7 +8,7 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
-cursor.execute("create DATABASE chocolate")
+cursor.execute("create DATABASE confectionery")
 
 db.close()
 cursor.close()
