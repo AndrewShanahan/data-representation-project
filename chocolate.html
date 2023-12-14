@@ -24,10 +24,10 @@
             </table>
         </div>
         <div id='createUpdateForm' style="display: none">
-                <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> Book</h2>
+                <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> Chocolate</h2>
                 <input type="hidden" name="id"/>
-                Title <input type="text" name="chocolateName" /><br/>
-                Author <input type="text" name="Brand"/> <br/>
+                ChocolateName <input type="text" name="chocolateName" /><br/>
+                Brand <input type="text" name="Brand"/> <br/>
                 Price <input type="number" name="Price"/> <br/>
                 <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
                 <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
@@ -53,7 +53,7 @@
     }
     function showUpdate(buttonElement){
         document.getElementById('showCreateButton').style.display="none"
-        document.getElementById('chocolatebookTable').style.display="none"
+        document.getElementById('chocolateTable').style.display="none"
         document.getElementById('createUpdateForm').style.display="block"
 
         document.getElementById('createLabel').style.display="none"
@@ -66,19 +66,19 @@
         var rowElement = buttonElement.parentNode.parentNode
         // these is a way of finding the closest <tr> which would safer, closest()
         
-        var book = getBookFromRow(rowElement)
-        populateFormWithBook(book)
+        var chocolate = getChocolateFromRow(rowElement)
+        populateFormWithChocolate(chocolate)
     }
     function doCreate(){
         var form = document.getElementById('createUpdateForm')
 
-        var book = {}
+        var chocolate = {}
        
         chocolate.chocolcateName = form.querySelector('input[name="chocolateName"]').value
-        book.brand = form.querySelector('input[name="brand"]').value
-        book.price = form.querySelector('input[name="price"]').value
-        console.log(JSON.stringify(book))
-        createBookAjax(book)
+        chocolate.brand = form.querySelector('input[name="brand"]').value
+        chocolate.price = form.querySelector('input[name="price"]').value
+        console.log(JSON.stringify(chocolate))
+        createChocolateAjax(chocolate)
         
         
     }
@@ -86,7 +86,7 @@
         var chocolate = getChocolateFromForm();
         var rowElement = document.getElementById(chocolate.id);
         updateChocolateAjax(chocolate);
-        setBookInRow(rowElement,chocolate);
+        setChocolateInRow(rowElement,chocolate);
        
         clearForm();
         showViewAll();
@@ -98,7 +98,7 @@
         deletechocolateAjax(rowElement.getAttribute("id"));
         tableElement.deleteRow(index);
     }
-    function addChocolateToTable(book){
+    function addChocolateToTable(chocolate){
         var tableElement = document.getElementById('chocolateTable')
         var rowElement = tableElement.insertRow(-1)
         rowElement.setAttribute('id',chocolate.id)
@@ -126,36 +126,36 @@
     }
     function getChocolateFromRow(rowElement){
         var car ={}
-        book.id  = rowElement.getAttribute('id')
-        book.title = rowElement.cells[1].firstChild.textContent
-        book.author = rowElement.cells[2].firstChild.textContent
-        book.price = parseInt(rowElement.cells[3].firstChild.textContent,10)
+        chocolate.id  = rowElement.getAttribute('id')
+        chocolate.chocolateName = rowElement.cells[1].firstChild.textContent
+        chocolate.brand = rowElement.cells[2].firstChild.textContent
+        chocolate.price = parseInt(rowElement.cells[3].firstChild.textContent,10)
         return chocolate
     }
-    function setBookInRow(rowElement, chocolate){
+    function setChocolateInRow(rowElement, chocolate){
         rowElement.cells[0].firstChild.textContent= chocolate.id  
         rowElement.cells[1].firstChild.textContent= chocolate.chocolateName 
         rowElement.cells[2].firstChild.textContent= chocolate.brand
         rowElement.cells[3].firstChild.textContent= chocolate.price
     }
-    function populateFormWithBook(chocolate){
+    function populateFormWithChocolate(chocolate){
         var form = document.getElementById('createUpdateForm')
         form.querySelector('input[name="id"]').disabled = true
 
         form.querySelector('input[name="id"]').value  = chocolate.id
-        form.querySelector('input[name="title"]').value= chocolate.chocolateName
-        form.querySelector('input[name="author"]').value= chocolate.brand
+        form.querySelector('input[name="chocolateName"]').value= chocolate.chocolateName
+        form.querySelector('input[name="brand"]').value= chocolate.brand
         form.querySelector('input[name="price"]').value= chocolate.price
         return chocolate
     }
     function getChocolateFromForm(){
         var form = document.getElementById('createUpdateForm')
-        var book = {}
+        var chocolate = {}
         chocolate.id = form.querySelector('input[name="id"]').value
         chocolate.chocolateName = form.querySelector('input[name="chocolateName"]').value
         chocolate.brand = form.querySelector('input[name="brand"]').value
         chocolate.price = parseInt(form.querySelector('input[name="price"]').value,10)
-        console.log(JSON.stringify(book))
+        console.log(JSON.stringify(chocolate))
         return chocolate
     }
     function getAllAjax(){
@@ -166,7 +166,7 @@
             "dataType": "JSON",
             "success":function(result){
                 //console.log(result);
-                for (book of result){
+                for (chocolate of result){
                     addChocolateToTable(chocolate);
                 }
                 
@@ -178,7 +178,7 @@
 
     }
     function createChocolateAjax(chocolate){
-        console.log(JSON.stringify(book));
+        console.log(JSON.stringify(chocolate));
         $.ajax({
             "url": "http://127.0.0.1:5000/chocolates",
             "method":"POST",
